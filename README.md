@@ -1,6 +1,7 @@
 # About
 
-A Markov chain generator based on N-Gram mappings capable of generating both words and sentences
+A Markov chain generator based on N-Gram mappings capable of 
+generating both words and sentences
 
 # Usage
 
