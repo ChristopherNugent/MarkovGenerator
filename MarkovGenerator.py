@@ -39,4 +39,4 @@ class MarkovGenerator:
             output += last + ' '
             last = self.words.random_from(last)
             max_count -= 1
-        return output[:len(output)-1]
+        return output[:len(output) - 1]
