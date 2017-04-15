@@ -5,7 +5,7 @@ generating both words and sentences
 
 # Usage
 
-Import the `MarkovGenerator` class from `MarkovGenerator.py`, and instanciate it.
+Import the `MarkovGenerator` class from `MarkovGenerator.py`, and instantiate it.
 
 Use the `new_word()` method to add content for word generation
 
