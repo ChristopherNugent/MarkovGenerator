@@ -7,6 +7,11 @@ class MarkovGenerator:
         self.letters = NGramMap()
         self.words = NGramMap()
 
+    def __str__(self):
+        output = 'Letters------------------\n' + str(self.letters) + \
+            '\n\nWords--------------------\n' + str(self.words)
+        return output
+
     def new_word(self, word):
         last = '\start'
         for char in word:
