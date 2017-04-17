@@ -12,21 +12,26 @@ class MarkovGenerator:
             '\n\nWords--------------------\n' + str(self.words)
         return output
 
-    def new_word(self, word):
+    def add_word(self, word):
         last = '\start'
         for char in word:
             self.letters.add(last, char)
             last = char
         self.letters.add(last, '\end')
 
-    def new_sentence(self, sentence):
+    def add_sentence(self, sentence):
         last = '\start'
         words = sentence.split()
         for word in words:
             self.words.add(last, word)
             last = word
-            self.new_word(word)
+            self.add_word(word)
         self.words.add(last, '\end')
+
+    def add_from_file(self, filename):
+        with open(filename, 'r') as f:
+            for line in f:
+                self.add_sentence(line)
 
     def next_word(self, max_count=-1):
         output = ''

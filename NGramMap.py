@@ -13,7 +13,7 @@ class NGramMap:
             self.map.update({key: Counter()})
             self.map[key].update([value])
 
-    def next_most(self, key):
+    def common_from(self, key):
         """Returns the most common answer for a given key.
         Raises KeyError if the pattern does not exist."""
         return self.map[key].most_common(1)[0][0]
