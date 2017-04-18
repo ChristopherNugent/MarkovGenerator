@@ -19,13 +19,14 @@ class MarkovGenerator:
             last = char
         self.letters.add(last, '\end')
 
-    def add_sentence(self, sentence):
+    def add_sentence(self, sentence, add_words=False):
         last = '\start'
         words = sentence.split()
         for word in words:
             self.words.add(last, word)
             last = word
-            self.add_word(word)
+            if add_words:
+                self.add_word(word)
         self.words.add(last, '\end')
 
     def add_from_file(self, filename):
