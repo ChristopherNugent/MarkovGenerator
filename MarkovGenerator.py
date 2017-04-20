@@ -1,11 +1,13 @@
-from NGramMap import NGramMap
+from freqmap import FrequencyMap
 
 
 class MarkovGenerator:
 
+    _end = '%%MarkovEnds%%'
+
     def __init__(self):
-        self.letters = NGramMap()
-        self.words = NGramMap()
+        self.letters = FrequencyMap()
+        self.words = FrequencyMap()
 
     def __str__(self):
         output = 'Letters------------------\n' + str(self.letters) + \
@@ -13,41 +15,33 @@ class MarkovGenerator:
         return output
 
     def add_word(self, word):
-        last = '\start'
-        for char in word:
-            self.letters.add(last, char)
-            last = char
-        self.letters.add(last, '\end')
+        MarkovGenerator._add(self.letters, word)
 
-    def add_sentence(self, sentence, add_words=False):
-        last = '\start'
-        words = sentence.split()
-        for word in words:
-            self.words.add(last, word)
-            last = word
-            if add_words:
-                self.add_word(word)
-        self.words.add(last, '\end')
+    def add_sentence(self, sentence):
+        MarkovGenerator._add(self.words, sentence.split())
 
-    def add_from_file(self, filename):
+    def add_from_file(self, filename, separator='\n\n', add_words=False):
         with open(filename, 'r') as f:
             for line in f:
-                self.add_sentence(line)
+                for sentence in line.split(separator):
+                    self.add_sentence(sentence, add_words)
 
-    def next_word(self, max_count=-1):
-        output = ''
-        last = self.letters.random_from('\start')
-        while max_count != 0 and last != '\end':
-            output += last
-            last = self.letters.random_from(last)
-            max_count -= 1
-        return output
+    def next_word(self, max_count=-1, separator=''):
+        return MarkovGenerator._next(self.letters, max_count, separator)
 
-    def next_sentence(self, max_count=-1):
-        output = ''
-        last = self.words.random_from('\start')
-        while max_count != 0 and last != '\end':
-            output += last + ' '
-            last = self.words.random_from(last)
+    def next_sentence(self, max_count=-1, separator=' '):
+        return MarkovGenerator._next(self.words, max_count, separator)
+
+    def _add(target, sequence):
+        target.add(MarkovGenerator._end, sequence[0])
+        target.feed(sequence)
+        target.add(sequence[len(sequence) - 1], MarkovGenerator._end)
+
+    def _next(source, max_count=-1, separator=''):
+        output = []
+        last = source.random_from(MarkovGenerator._end)
+        while max_count != 0 and (output == '' or last != MarkovGenerator._end):
+            output.append(last)
+            last = source.random_from(last)
             max_count -= 1
-        return output[:len(output) - 1]
+        return separator.join(output)
