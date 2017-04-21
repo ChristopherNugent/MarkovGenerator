@@ -20,11 +20,11 @@ class MarkovGenerator:
     def add_sentence(self, sentence):
         MarkovGenerator._add(self.words, sentence.split())
 
-    def add_from_file(self, filename, separator='\n\n', add_words=False):
+    def add_from_file(self, filename, separator='\n\n'):
         with open(filename, 'r') as f:
             for line in f:
                 for sentence in line.split(separator):
-                    self.add_sentence(sentence, add_words)
+                    self.add_sentence(sentence)
 
     def next_word(self, max_count=-1, separator=''):
         return MarkovGenerator._next(self.letters, max_count, separator)
